@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hilal Technologic Website
+
+Website Company Profile + E-commerce untuk Hilal Technologic dengan tema Dark Mode + Violet Neon.
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Database**: PostgreSQL (Supabase)
+- **ORM**: Prisma
+- **Authentication**: NextAuth.js
+- **Animations**: Framer Motion
+
+## Features
+
+### Public Pages
+- Homepage dengan Hero, Services, Portfolio, Testimonials
+- About - Company profile, visi misi, team
+- Services - Daftar layanan IT
+- Portfolio - Showcase proyek
+- Products - E-commerce catalog
+- Blog - Artikel teknologi
+- Contact - Form kontak dengan WhatsApp integration
+
+### Admin Dashboard (CMS)
+- Dashboard dengan statistik
+- Products management
+- Categories management
+- Orders management
+- Services management
+- Portfolio management
+- Blog management
+- Team management
+- Testimonials management
+- Messages management
+- Hero Slides management
+- Site Settings
 
 ## Getting Started
 
-First, run the development server:
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Setup Environment Variables
+
+Copy `.env` file dan isi dengan kredensial Supabase Anda:
+
+```env
+# Database (Supabase)
+DATABASE_URL="postgresql://postgres.[YOUR-PROJECT-REF]:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true"
+DIRECT_URL="postgresql://postgres.[YOUR-PROJECT-REF]:[YOUR-PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres"
+
+# NextAuth
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-super-secret-key"
+
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL="https://[YOUR-PROJECT-REF].supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-supabase-anon-key"
+SUPABASE_SERVICE_ROLE_KEY="your-supabase-service-role-key"
+```
+
+### 3. Setup Database
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+### 4. Create Admin User
+
+Jalankan script untuk membuat admin user:
+
+```bash
+npx ts-node scripts/create-admin.ts
+```
+
+Atau buat manual di database dengan role `ADMIN`.
+
+### 5. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── (main)/          # Public pages
+│   ├── admin/           # Admin dashboard
+│   ├── api/             # API routes
+│   └── auth/            # Auth pages
+├── components/
+│   ├── admin/           # Admin components
+│   ├── layout/          # Layout components
+│   ├── sections/        # Homepage sections
+│   └── ui/              # UI components (shadcn)
+├── lib/                 # Utilities
+└── types/               # TypeScript types
+```
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT

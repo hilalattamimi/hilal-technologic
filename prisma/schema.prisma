@@ -1,0 +1,535 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ==================== AUTH ====================
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  orders   Order[]
+  cart     Cart?
+  wishlist Wishlist?
+  reviews  ProductReview[]
+  profile  UserProfile?
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// ==================== SETTINGS ====================
+model SiteSettings {
+  id          String  @id @default(cuid())
+  siteName    String  @default("Hilal Technologic")
+  siteTagline String?
+  logo        String?
+  favicon     String?
+  email       String?
+  phone       String?
+  whatsapp    String?
+  address     String? @db.Text
+  mapEmbed    String? @db.Text
+
+  facebook  String?
+  instagram String?
+  twitter   String?
+  linkedin  String?
+  youtube   String?
+  github    String?
+
+  metaTitle       String?
+  metaDescription String? @db.Text
+  metaKeywords    String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==================== HERO SLIDES ====================
+model HeroSlide {
+  id          String  @id @default(cuid())
+  title       String
+  subtitle    String?
+  description String? @db.Text
+  image       String?
+  buttonText  String?
+  buttonLink  String?
+  order       Int     @default(0)
+  isActive    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==================== SERVICES ====================
+model Service {
+  id          String  @id @default(cuid())
+  title       String
+  slug        String  @unique
+  description String? @db.Text
+  content     String? @db.Text
+  icon        String?
+  image       String?
+  price       Decimal? @db.Decimal(12, 2)
+  priceUnit   String?
+  features    String[] @default([])
+  order       Int     @default(0)
+  isActive    Boolean @default(true)
+  isFeatured  Boolean @default(false)
+
+  bookings ServiceBooking[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ServiceBooking {
+  id        String        @id @default(cuid())
+  serviceId String
+  service   Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  message   String?       @db.Text
+  date      DateTime?
+  status    BookingStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+// ==================== PORTFOLIO ====================
+model PortfolioCategory {
+  id        String      @id @default(cuid())
+  name      String
+  slug      String      @unique
+  order     Int         @default(0)
+  projects  Portfolio[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Portfolio {
+  id          String             @id @default(cuid())
+  title       String
+  slug        String             @unique
+  description String?            @db.Text
+  content     String?            @db.Text
+  client      String?
+  projectUrl  String?
+  thumbnail   String?
+  images      PortfolioImage[]
+  categoryId  String?
+  category    PortfolioCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  technologies String[]          @default([])
+  completedAt DateTime?
+  isFeatured  Boolean            @default(false)
+  isActive    Boolean            @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PortfolioImage {
+  id          String    @id @default(cuid())
+  url         String
+  alt         String?
+  order       Int       @default(0)
+  portfolioId String
+  portfolio   Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+// ==================== BLOG ====================
+model BlogCategory {
+  id    String     @id @default(cuid())
+  name  String
+  slug  String     @unique
+  posts BlogPost[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlogTag {
+  id    String     @id @default(cuid())
+  name  String
+  slug  String     @unique
+  posts BlogPost[] @relation("BlogPostTags")
+
+  createdAt DateTime @default(now())
+}
+
+model BlogPost {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  excerpt     String?       @db.Text
+  content     String?       @db.Text
+  thumbnail   String?
+  categoryId  String?
+  category    BlogCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  tags        BlogTag[]     @relation("BlogPostTags")
+  author      String?
+  views       Int           @default(0)
+  isPublished Boolean       @default(false)
+  isFeatured  Boolean       @default(false)
+  publishedAt DateTime?
+  scheduledAt DateTime?
+
+  // SEO Fields
+  metaTitle       String?
+  metaDescription String?   @db.Text
+  metaKeywords    String?
+  ogImage         String?
+
+  // Draft & Auto-save
+  isDraft         Boolean   @default(true)
+  lastAutoSave    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==================== TEAM ====================
+model TeamMember {
+  id        String  @id @default(cuid())
+  name      String
+  position  String?
+  bio       String? @db.Text
+  image     String?
+  email     String?
+  phone     String?
+  linkedin  String?
+  twitter   String?
+  github    String?
+  order     Int     @default(0)
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==================== TESTIMONIALS ====================
+model Testimonial {
+  id        String  @id @default(cuid())
+  name      String
+  position  String?
+  company   String?
+  content   String  @db.Text
+  image     String?
+  rating    Int     @default(5)
+  isActive  Boolean @default(true)
+  order     Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==================== CONTACT MESSAGES ====================
+model ContactMessage {
+  id        String        @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  subject   String?
+  message   String        @db.Text
+  status    MessageStatus @default(UNREAD)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum MessageStatus {
+  UNREAD
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+// ==================== E-COMMERCE: PRODUCTS ====================
+model ProductCategory {
+  id          String            @id @default(cuid())
+  name        String
+  slug        String            @unique
+  description String?           @db.Text
+  image       String?
+  parentId    String?
+  parent      ProductCategory?  @relation("CategoryChildren", fields: [parentId], references: [id], onDelete: SetNull)
+  children    ProductCategory[] @relation("CategoryChildren")
+  products    Product[]
+  order       Int               @default(0)
+  isActive    Boolean           @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id          String           @id @default(cuid())
+  name        String
+  slug        String           @unique
+  description String?          @db.Text
+  content     String?          @db.Text
+  sku         String?          @unique
+  price       Decimal          @db.Decimal(12, 2)
+  comparePrice Decimal?        @db.Decimal(12, 2)
+  cost        Decimal?         @db.Decimal(12, 2)
+  stock       Int              @default(0)
+  lowStockThreshold Int        @default(5)
+  weight      Decimal?         @db.Decimal(8, 2)
+  categoryId  String?
+  category    ProductCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  images      ProductImage[]
+  isFeatured  Boolean          @default(false)
+  isActive    Boolean          @default(true)
+  
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
+  wishlistItems WishlistItem[]
+  reviews       ProductReview[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  url       String
+  alt       String?
+  order     Int     @default(0)
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
+// ==================== E-COMMERCE: CART ====================
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String?    @unique
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId String?    @unique
+  items     CartItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  cartId    String
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int     @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, productId])
+}
+
+// ==================== E-COMMERCE: ORDERS ====================
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  userId          String?
+  user            User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  customerName    String
+  customerEmail   String
+  customerPhone   String?
+  
+  shippingAddress String      @db.Text
+  shippingCity    String?
+  shippingState   String?
+  shippingZip     String?
+  shippingCountry String?     @default("Indonesia")
+  
+  billingAddress  String?     @db.Text
+  
+  items           OrderItem[]
+  subtotal        Decimal     @db.Decimal(12, 2)
+  shippingCost    Decimal     @default(0) @db.Decimal(12, 2)
+  tax             Decimal     @default(0) @db.Decimal(12, 2)
+  discount        Decimal     @default(0) @db.Decimal(12, 2)
+  total           Decimal     @db.Decimal(12, 2)
+  
+  status          OrderStatus @default(PENDING)
+  paymentStatus   PaymentStatus @default(UNPAID)
+  paymentMethod   String?
+  paymentProof    String?
+  
+  notes           String?     @db.Text
+  adminNotes      String?     @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  
+  name      String
+  sku       String?
+  price     Decimal @db.Decimal(12, 2)
+  quantity  Int
+  subtotal  Decimal @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now())
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+// ==================== USER FEATURES ====================
+model Wishlist {
+  id        String         @id @default(cuid())
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     WishlistItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId])
+}
+
+model WishlistItem {
+  id         String   @id @default(cuid())
+  wishlistId String
+  wishlist   Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([wishlistId, productId])
+}
+
+model ProductReview {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int     @default(5)
+  title     String?
+  content   String? @db.Text
+  isVerified Boolean @default(false)
+  isApproved Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([productId, userId])
+}
+
+model Newsletter {
+  id        String  @id @default(cuid())
+  email     String  @unique
+  name      String?
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserProfile {
+  id          String  @id @default(cuid())
+  userId      String  @unique
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  phone       String?
+  address     String? @db.Text
+  city        String?
+  state       String?
+  zipCode     String?
+  country     String? @default("Indonesia")
+  dateOfBirth DateTime?
+  gender      String?
+  avatar      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

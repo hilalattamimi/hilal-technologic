@@ -1,0 +1,27 @@
+{
+  "name": "Hilal Technologic",
+  "short_name": "Hilal Tech",
+  "description": "IT Solutions & Software Development Indonesia - Jasa pembuatan website, aplikasi mobile, dan software custom",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#8B5CF6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "technology", "productivity"],
+  "lang": "id",
+  "dir": "ltr"
+}
