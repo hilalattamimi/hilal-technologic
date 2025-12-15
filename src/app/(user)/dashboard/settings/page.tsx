@@ -65,7 +65,7 @@ export default function SettingsPage() {
         const data = await response.json()
         toast.error(data.error || 'Gagal mengubah password')
       }
-    } catch (error) {
+    } catch {
       toast.error('Terjadi kesalahan')
     } finally {
       setIsChangingPassword(false)
@@ -87,7 +87,7 @@ export default function SettingsPage() {
         const data = await response.json()
         toast.error(data.error || 'Gagal menghapus akun')
       }
-    } catch (error) {
+    } catch {
       toast.error('Terjadi kesalahan')
     } finally {
       setIsDeletingAccount(false)

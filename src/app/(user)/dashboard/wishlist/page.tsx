@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Heart, Trash2, ShoppingCart, Loader2, Package } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 
@@ -33,7 +33,7 @@ function formatPrice(price: number) {
 }
 
 export default function WishlistPage() {
-  const { data: session } = useSession()
+  useSession()
   const [items, setItems] = useState<WishlistItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [removingId, setRemovingId] = useState<string | null>(null)
@@ -69,7 +69,7 @@ export default function WishlistPage() {
       } else {
         toast.error('Gagal menghapus dari wishlist')
       }
-    } catch (error) {
+    } catch {
       toast.error('Terjadi kesalahan')
     } finally {
       setRemovingId(null)
@@ -89,7 +89,7 @@ export default function WishlistPage() {
       } else {
         toast.error('Gagal menambahkan ke keranjang')
       }
-    } catch (error) {
+    } catch {
       toast.error('Terjadi kesalahan')
     }
   }

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Star, Package, Loader2, Edit, Trash2 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
@@ -41,7 +41,7 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export default function ReviewsPage() {
-  const { data: session } = useSession()
+  useSession()
   const [reviews, setReviews] = useState<Review[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -77,7 +77,7 @@ export default function ReviewsPage() {
       } else {
         toast.error('Gagal menghapus ulasan')
       }
-    } catch (error) {
+    } catch {
       toast.error('Terjadi kesalahan')
     } finally {
       setDeletingId(null)

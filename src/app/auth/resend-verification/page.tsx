@@ -39,7 +39,7 @@ export default function ResendVerificationPage() {
       } else {
         toast.error(data.error)
       }
-    } catch (error) {
+    } catch {
       toast.error('Terjadi kesalahan')
     } finally {
       setIsLoading(false)

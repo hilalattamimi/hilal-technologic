@@ -78,7 +78,7 @@ export default function ProductsTable({ products }: ProductsTableProps) {
       } else {
         toast.error('Failed to delete product')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsDeleting(false)

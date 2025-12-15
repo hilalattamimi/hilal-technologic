@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { Loader2, Save, User, Mail, Phone, MapPin, Calendar } from 'lucide-react'
+import { Loader2, Save, User, Mail, MapPin } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,18 +12,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner'
 import ImageUpload from '@/components/admin/shared/ImageUpload'
 
-interface UserProfile {
-  id?: string
-  phone?: string
-  address?: string
-  city?: string
-  state?: string
-  zipCode?: string
-  country?: string
-  dateOfBirth?: string
-  gender?: string
-  avatar?: string
-}
 
 export default function ProfilePage() {
   const { data: session, update: updateSession } = useSession()
@@ -48,6 +36,7 @@ export default function ProfilePage() {
     if (session?.user) {
       fetchProfile()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
   const fetchProfile = async () => {
@@ -97,7 +86,7 @@ export default function ProfilePage() {
         const data = await response.json()
         toast.error(data.error || 'Gagal memperbarui profil')
       }
-    } catch (error) {
+    } catch {
       toast.error('Terjadi kesalahan')
     } finally {
       setIsLoading(false)

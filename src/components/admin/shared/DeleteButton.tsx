@@ -48,7 +48,7 @@ export default function DeleteButton({ id, endpoint, itemName = 'item', onSucces
         const data = await response.json()
         toast.error(data.error || `Failed to delete ${itemName}`)
       }
-    } catch (error) {
+    } catch {
       toast.error(`Failed to delete ${itemName}`)
     } finally {
       setIsDeleting(false)

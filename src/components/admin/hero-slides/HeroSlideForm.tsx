@@ -66,7 +66,7 @@ export default function HeroSlideForm({ slide }: HeroSlideFormProps) {
         const data = await response.json()
         toast.error(data.error || 'Failed to save slide')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)

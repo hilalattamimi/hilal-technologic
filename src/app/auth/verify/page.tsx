@@ -33,7 +33,7 @@ export default function VerifyEmailPage() {
           setStatus('error')
           setMessage(data.error)
         }
-      } catch (error) {
+      } catch {
         setStatus('error')
         setMessage('Terjadi kesalahan saat memverifikasi email')
       }

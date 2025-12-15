@@ -76,7 +76,7 @@ export default function ServiceForm({ service }: ServiceFormProps) {
         const data = await response.json()
         toast.error(data.error || 'Failed to save service')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)

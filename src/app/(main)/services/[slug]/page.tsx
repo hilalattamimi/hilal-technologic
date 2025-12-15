@@ -112,7 +112,7 @@ export default async function ServiceDetailPage({ params }: Props) {
               {/* Features */}
               {service.features.length > 0 && (
                 <div>
-                  <h2 className="text-2xl font-bold mb-6">What's Included</h2>
+                  <h2 className="text-2xl font-bold mb-6">What&apos;s Included</h2>
                   <ul className="space-y-4">
                     {service.features.map((feature, index) => (
                       <li key={index} className="flex items-start gap-3">

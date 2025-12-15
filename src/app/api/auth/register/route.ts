@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 import { generateVerificationToken } from '@/lib/tokens'
 import { sendVerificationEmail } from '@/lib/mail'
 import { rateLimit, authRateLimit, rateLimitResponse } from '@/lib/rate-limit'
-import { sanitizeEmail, sanitizeString, validatePassword } from '@/lib/sanitize'
+import { sanitizeEmail, sanitizeString } from '@/lib/sanitize'
 
 export async function POST(request: NextRequest) {
   // Rate limiting for auth endpoints

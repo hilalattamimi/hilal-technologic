@@ -68,7 +68,7 @@ export default function MessagesTable({ messages }: MessagesTableProps) {
       } else {
         toast.error('Failed to update status')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     }
   }
@@ -85,7 +85,7 @@ export default function MessagesTable({ messages }: MessagesTableProps) {
       } else {
         toast.error('Failed to delete message')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     }
   }

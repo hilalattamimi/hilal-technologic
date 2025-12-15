@@ -30,7 +30,7 @@ export default function AboutStory() {
                 cost-effective solutions.
               </p>
               <p>
-                With a team of passionate developers, designers, and strategists, we've 
+                With a team of passionate developers, designers, and strategists, we&apos;ve 
                 successfully delivered over 100 projects, helping businesses achieve 
                 their digital transformation goals.
               </p>

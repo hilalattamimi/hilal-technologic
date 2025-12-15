@@ -87,7 +87,7 @@ export default async function TestimonialsAdminPage() {
                       </div>
                     </div>
                     <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-                      "{testimonial.content}"
+                      &ldquo;{testimonial.content}&rdquo;
                     </p>
                   </div>
                 </div>

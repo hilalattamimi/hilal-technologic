@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { Upload, X, Loader2, Image as ImageIcon } from 'lucide-react'
+import { Upload, X, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -74,9 +74,9 @@ export default function ImageUpload({
 
         onChange(urlData.publicUrl)
         toast.success('Image uploaded successfully')
-      } catch (error: any) {
+      } catch (error) {
         console.error('Upload error:', error)
-        toast.error(error.message || 'Failed to upload image')
+        toast.error(error instanceof Error ? error.message : 'Failed to upload image')
       } finally {
         setIsUploading(false)
       }

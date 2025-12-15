@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { 
   Save, 
@@ -33,7 +33,6 @@ import {
 } from '@/components/ui/select'
 import {
   Tabs,
-  TabsContent,
   TabsList,
   TabsTrigger,
 } from '@/components/ui/tabs'
@@ -159,6 +158,7 @@ export default function BlogFormAdvanced({ post, categories }: BlogFormAdvancedP
     }, 30000)
 
     return () => clearInterval(autoSave)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData])
 
   const saveDraft = async (isAutoSave = false) => {
@@ -194,7 +194,7 @@ export default function BlogFormAdvanced({ post, categories }: BlogFormAdvancedP
           }
         }
       }
-    } catch (error) {
+    } catch {
       if (!isAutoSave) toast.error('Failed to save draft')
     } finally {
       if (!isAutoSave) setIsSavingDraft(false)

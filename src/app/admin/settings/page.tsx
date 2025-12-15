@@ -65,7 +65,7 @@ export default function SettingsPage() {
       } else {
         toast.error('Failed to save settings')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)

@@ -42,7 +42,7 @@ export default function NewProductCategoryPage() {
         const data = await response.json()
         toast.error(data.error || 'Failed to create category')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)

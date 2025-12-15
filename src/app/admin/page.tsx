@@ -3,14 +3,10 @@ import { prisma } from '@/lib/prisma'
 import { 
   Package, 
   ShoppingCart, 
-  Users, 
   MessageSquare,
-  DollarSign,
-  TrendingUp,
-  Eye,
   FileText
 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import RecentOrders from '@/components/admin/dashboard/RecentOrders'
 import RecentMessages from '@/components/admin/dashboard/RecentMessages'
 
@@ -77,7 +73,7 @@ export default async function AdminDashboard() {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold">Dashboard</h2>
-        <p className="text-muted-foreground">Welcome back! Here's an overview of your site.</p>
+        <p className="text-muted-foreground">Welcome back! Here&apos;s an overview of your site.</p>
       </div>
 
       {/* Stats Grid */}

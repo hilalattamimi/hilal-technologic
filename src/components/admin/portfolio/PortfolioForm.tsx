@@ -98,7 +98,7 @@ export default function PortfolioForm({ portfolio, categories }: PortfolioFormPr
         const data = await response.json()
         toast.error(data.error || 'Failed to save portfolio')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)

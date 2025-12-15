@@ -41,7 +41,7 @@ export default function LoginPage() {
         router.push(callbackUrl)
         router.refresh()
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred. Please try again.')
     } finally {
       setIsLoading(false)
@@ -127,7 +127,7 @@ export default function LoginPage() {
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
               <p>
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link href="/auth/register" className="text-violet-400 hover:underline">
                   Sign up
                 </Link>

@@ -56,7 +56,7 @@ export default function RegisterPage() {
       } else {
         toast.error(data.error || 'Gagal membuat akun')
       }
-    } catch (error) {
+    } catch {
       toast.error('Terjadi kesalahan. Silakan coba lagi.')
     } finally {
       setIsLoading(false)

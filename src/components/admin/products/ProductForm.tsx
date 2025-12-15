@@ -99,7 +99,7 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
         const data = await response.json()
         toast.error(data.error || 'Failed to save product')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)

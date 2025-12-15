@@ -59,7 +59,7 @@ export default function EditProductCategoryPage({ params }: { params: { id: stri
         const data = await response.json()
         toast.error(data.error || 'Failed to update category')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)
@@ -83,7 +83,7 @@ export default function EditProductCategoryPage({ params }: { params: { id: stri
         const data = await response.json()
         toast.error(data.error || 'Failed to delete category')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsDeleting(false)

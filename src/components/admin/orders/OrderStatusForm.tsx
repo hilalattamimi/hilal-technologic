@@ -71,7 +71,7 @@ export default function OrderStatusForm({ order }: OrderStatusFormProps) {
         const data = await response.json()
         toast.error(data.error || 'Failed to update order')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)

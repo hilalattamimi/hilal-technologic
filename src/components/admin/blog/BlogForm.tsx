@@ -90,7 +90,7 @@ export default function BlogForm({ post, categories }: BlogFormProps) {
         const data = await response.json()
         toast.error(data.error || 'Failed to save post')
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred')
     } finally {
       setIsLoading(false)
